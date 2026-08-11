@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0c0b09;
+  --color-ink-2: #141210;
+  --color-gold: #c9a66b;
+  --color-gold-soft: #a98a5a;
+  --color-cream: #ece4d3;
+  --color-umber: #2b1d15;
+  --color-dim: rgba(236, 228, 211, 0.58);
+  --color-dim-2: rgba(236, 228, 211, 0.36);
+
+  --font-serif: "Fraunces", serif;
+  --font-sans: "Inter", sans-serif;
+
+  --animate-scroll-cue: scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+}
