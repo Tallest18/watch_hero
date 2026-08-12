@@ -1,65 +1,6 @@
 /**
  * WatchHeroScroll.tsx
  * ---------------------------------------------------------------------------
- * A scroll-driven "watch, unfastened" hero, converted from a static HTML/CSS/
- * vanilla-JS prototype into React + TypeScript + Tailwind CSS + Framer Motion.
- *
- * This revision brings the component to an exact behavioral/content match
- * with the original watch-hero-scroll.html prototype. Differences found and
- * fixed vs. the previous React version:
- *
- * 1. FRAME COUNT / RENDERING. The HTML embeds 80 base64 JPEG frames and
- *    paints them onto a <canvas> with manual cover-fit scaling and DPR
- *    handling. The previous React version only wired up 9 placeholder frames
- *    rendered as stacked, cross-fading <img> tags. This version restores the
- *    full 80-frame sequence (extracted to real files, see IMAGES below) and
- *    repaints them on a <canvas> using the same draw/scale algorithm as the
- *    original, so there's no CSS crossfade the HTML never had.
- * 2. TRANSITIONS. The HTML toggles a boolean `.on`/`.active` class and lets a
- *    CSS `transition` animate the change over real time (panels: .7s ease,
- *    chapter marks: color/opacity .5s ease, scroll cue: opacity .6s ease).
- *    The previous React version instead interpolated opacity continuously
- *    against scroll *position* via useTransform, which feels different at
- *    varying scroll speeds. This version switches to the same
- *    boolean-toggle + time-based-transition model (via inline `style`, to
- *    match the exact easing/duration values rather than Tailwind's default
- *    timing curve).
- * 3. BREAKPOINT. The HTML's only breakpoint is `max-width:760px`. Tailwind's
- *    `md:` is 768px, an 8px mismatch. All responsive classes below use the
- *    arbitrary `max-[760px]:` variant instead of `max-md:`/`sm:` so the
- *    layout shifts at the same point the original does.
- * 4. CONTENT. The "Specs" section and footer had placeholder copy that
- *    didn't match the HTML at all — replaced with the original's exact
- *    copy ("The Details" / Case-Dial-Movement-Strap / "Reserve a Viewing" /
- *    the two-line footer).
- * 5. REDUCED-MOTION FALLBACK. The HTML's fallback copy only shows 4 blocks —
- *    it skips the "Reassembled" chapter and reuses the "Chapter IV" label
- *    on the last block (which shows the "Ready to wear" copy that belongs
- *    to chapter V). That looks like a bug in the source, but since the ask
- *    was an exact match, this version reproduces it verbatim rather than
- *    quietly "fixing" it. Say the word if you'd rather the fallback show
- *    all 5 chapters correctly labeled instead.
- * 6. STAGE_BOUNDS. Framer Motion's `useTransform` requires inputs to stay
- *    within [0, 1], so the HTML's out-of-range `1.001` final boundary is
- *    still clamped to `1` here — but the "is this the active chapter"
- *    check now explicitly treats reaching the final boundary as staying in
- *    the last chapter, so the observable behavior at progress === 1 matches
- *    the HTML either way.
- *
- * DEPENDENCIES
- *   npm install framer-motion
- *
- * FONTS
- *   Keep the original Google Fonts import in your HTML head or _document:
- *   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
- *
- * IMAGES
- *   The HTML's 80 base64 frames have been extracted to individual JPEGs
- *   (s001.jpg ... s080.jpg, 760x428). Drop the whole `frames/` folder into
- *   your app's `public/` directory (e.g. public/frames/s001.jpg ...), which
- *   is what the FRAMES paths below assume ("/frames/sNNN.jpg"). Adjust the
- *   path prefix if your bundler serves static assets differently.
- * ---------------------------------------------------------------------------
  */
 
 import React, { useRef, useState, useEffect } from "react";
@@ -682,39 +623,3 @@ export default function WatchHeroScroll() {
     </main>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*  tailwind.config.js additions (copy into your project config)              */
-/* -------------------------------------------------------------------------- */
-/*
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        ink: "#0c0b09",
-        "ink-2": "#141210",
-        gold: "#c9a66b",
-        "gold-soft": "#a98a5a",
-        cream: "#ece4d3",
-        umber: "#2b1d15",
-        dim: "rgba(236,228,211,0.58)",
-        "dim-2": "rgba(236,228,211,0.36)",
-      },
-      fontFamily: {
-        serif: ["Fraunces", "serif"],
-        sans: ["Inter", "sans-serif"],
-      },
-      keyframes: {
-        "scroll-cue": {
-          "0%": { transform: "scaleY(0.3)", opacity: "0.3" },
-          "50%": { transform: "scaleY(1)", opacity: "1" },
-          "100%": { transform: "scaleY(0.3)", opacity: "0.3" },
-        },
-      },
-      animation: {
-        "scroll-cue": "scroll-cue 1.8s ease-in-out infinite",
-      },
-    },
-  },
-};
-*/
